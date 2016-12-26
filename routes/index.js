@@ -51,18 +51,15 @@ router.get('/submit/:id', function(req, res) {
   })
 });
 
-router.post('/submit', upload.single('avatar'), function(req, res) {
-  console.log('files:',req.file);
-
-
-  // new Model('Template')(req.body).save(function(err,info){
-  //   if(err){
-  //     console.log(err)
-  //   }else{
-  //     let id = info._id;
-  //     res.redirect('/submit/'+ id );
-  //   }
-  // })
+router.post('/submit', function(req, res) {
+  new Model('Template')(req.body).save(function(err,info){
+    if(err){
+      console.log(err)
+    }else{
+      let id = info._id;
+      res.redirect('/submit/' + id);
+    }
+  })
 
 });
 
