@@ -1,0 +1,21 @@
+include includes/header.pug
+.container
+  form(action="/submit",role="form", method="post", class="form-horizontal" enctype="multipart/form-data")
+    .form-group
+      label(for="title") 标题
+      input(type="text", class="form-control", id="title", name="title", placeholder="请输入标题")
+    .form-group
+      label(for="content") 内容
+      input(type="text", class="form-control", id="content", name="content", placeholder="请输入内容")
+    .form-group
+      label(for="files") 图片
+      input(type="file" id="files" multiple="multiple")
+    .form-group
+      label 选择模板
+      select(name="modelType", class="form-control")
+        option(value="model1" selected="selected") 模板一
+        option(value="model2") 模板二
+        option(value="model3") 模板三
+    .form-group
+      button(type="submit", class="btn btn-default") 预览并提交
+      button(type="reset", class="btn btn-default") 重置
