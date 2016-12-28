@@ -26,7 +26,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.use(session({
   secret:'gaoquansecret', //密钥,用来防止session被篡改
   key:'gaoquankey', //cookie name 的名字

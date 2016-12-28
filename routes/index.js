@@ -6,16 +6,17 @@ const router = express.Router();
 
 //处理文件上传的中间件，只解析类型是multiple/form-data的类型
 const multer = require('multer');
-
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/uploads/')
+    cb(null, 'dist/images')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname + '-' + Date.now())
+    cb(null, Date.now() + '-' + file.originalname )
   }
 })
 let upload = multer({ storage: storage });
+let imgFiles = [];
+
 
 router.get('/', function(req,res){
   res.render('index')
@@ -29,19 +30,18 @@ router.get('/submit/:id', function(req, res) {
     }else{
       let model = info[0].modelType;//模板类型
       let id = info[0]._id;//数据的ID
-
-      res.render('template/model1.pug',{
+      let options = {
         title: info[0].title,
-        content: info[0].content
-      });
+        content: info[0].content,
+        imgFiles: imgFiles
+      }
+
+      res.render('template/model1.pug',options);
 
       let compiledFunction = pug.compileFile(path.join(__dirname,`../views/template/${model}.pug`));
 
-      let html = compiledFunction({
-        title: info[0].title,
-        content: info[0].content
-      });
-      fs.writeFile(path.join(__dirname,`../dist/${model}_${id}.html`),html,(err)=>{
+      let html = compiledFunction(options);
+      fs.writeFile(path.join(__dirname,`../dist/html/${model}_${id}.html`),html,(err)=>{
         if(err){
           console.log(err);
         }
@@ -51,7 +51,9 @@ router.get('/submit/:id', function(req, res) {
   })
 });
 
-router.post('/submit', function(req, res) {
+
+router.post('/submit', upload.array('files'), function(req, res) {
+  imgFiles = req.files;
   new Model('Template')(req.body).save(function(err,info){
     if(err){
       console.log(err)
@@ -60,7 +62,6 @@ router.post('/submit', function(req, res) {
       res.redirect('/submit/' + id);
     }
   })
-
 });
 
 module.exports = router;
