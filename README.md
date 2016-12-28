@@ -12,7 +12,7 @@
 yarn
 ```
 
-## 监听webpack
+## 启动项目
 ```
 npm run start
 ```
