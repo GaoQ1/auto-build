@@ -1,9 +1,17 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 module.exports = {
-    Template: {
-        title: {type:String, required:true},
-        content: {type:String, required:true},
-        modelType: {type:String, required:true}
-    }
+  User: {
+    username:{ type:String, required:true },
+    password:{ type:String, required:true }
+  },
+
+  Template: {
+    user: { type:ObjectId, ref:'User' },
+    activityName: { type:String },
+    pageTitle: { type:String },
+    productName: { type:String },
+    productPrice: { type:String },
+    modelType: { type:String, required:true }
+  }
 }

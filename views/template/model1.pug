@@ -4,12 +4,18 @@ html
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name='keywords',content=keywords)
 		meta(name='description',content=description)
-		title #{(title + ' - ' || '') + '中国东方航空'}
+		title '中国东方航空'
 		link(href="/favicon.ico", type="system/assets/images/x-icon")
 		<!--[if IE 7]>
 		link(rel="stylesheet", type="text/css", media="all", href="http://www.ceair.com/resource4/css/ie7hack.css")
 		<![endif]-->
 	body
-		.container #{content}
-			each image in imgFiles
-				img(src= '../images/' +image.filename)
+		.container #{activityName}
+			h3 活动名称 #{activityName}
+			h3 页面标题 #{pageTitle}
+			img(src= '../images/' + backgroundImage.filename)
+
+			each productInfo in productInfos
+				h3 #{productInfo.productName}
+				p #{productInfo.productPrice}
+				img(src= '../images/' + productInfo.imgFiles.filename)

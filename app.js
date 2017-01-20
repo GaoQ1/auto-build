@@ -7,11 +7,13 @@ var bodyParser = require('body-parser');
 
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var flash = require('connect-flash');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var db = require('./config/db');
 
+require('./utils');
 require('./models/model');
 
 var app = express();
@@ -39,6 +41,15 @@ app.use(session({
     collection: 'sessions'
   })
 }));
+
+app.use(flash());
+app.use(function(req,res,next){
+    res.locals.user = req.session.user;
+    res.locals.keyword = req.session.keyword;
+    res.locals.success = req.flash('success').toString();
+    res.locals.error = req.flash('error').toString();
+    next();
+});
 
 app.use('/', routes);
 app.use('/users', users);

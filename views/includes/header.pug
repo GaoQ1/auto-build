@@ -10,5 +10,16 @@ html
     script(src="/lib/bootstrap.min.js")
   body
     nav(class="navbar navbar-default", role="navigation")
-      .navbar-header
-        a(href="/", class="navbar-brand") 东方航空
+      .container
+        a.navbar-brand(href="/") 东方航空
+        ul.nav.navbar-nav.navbar-right
+          if !user
+            li
+              a(href="/users/reg") 注册
+            li
+              a(href="/users/login") 登录
+          else
+            li
+              a 列表
+            li
+              a(href="/users/logout") 退出
