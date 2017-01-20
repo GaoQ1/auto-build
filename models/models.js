@@ -7,12 +7,12 @@ module.exports = {
   },
 
   Template: {
-    user: { type:ObjectId, ref:'User' },
+    userId: { type:ObjectId, ref:'User' },
     activityName: { type:String },
     pageTitle: { type:String },
     productName: { type:String },
     productPrice: { type:String },
     createAt: { type:Date, default:Date.now },
-    modelType: { type:String, required:true }
+    modelType: { type:String }
   }
 }

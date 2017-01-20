@@ -67,8 +67,9 @@ router.get('/submit/:id', function(req, res) {
 
 router.post('/submit', upload.array('inputFile'), function(req, res) {
   imgFiles = req.files;
+  let userId = req.session.user._id;
 
-  new Model('Template')(req.body).save(function(err,info){
+  new Model('Template')(Object.assign(req.body,{userId: userId})).save(function(err,info){
     if(err){
       console.log(err)
     }else{
