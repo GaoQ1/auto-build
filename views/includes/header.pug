@@ -23,3 +23,8 @@ html
               a 列表
             li
               a(href="/users/logout") 退出
+    .container.text-center
+      if success
+        .alert.alert-success #{success}
+      if error
+        .alert.alert-danger #{error}

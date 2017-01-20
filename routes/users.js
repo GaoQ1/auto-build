@@ -35,9 +35,7 @@ router.post('/login', auth.checkNotLogin, function(req,res){
   var user = req.body;
   user.password = md5(user.password);
 
-  console.log(user);
-
-  Model('User').find(user).exec(function(err,user){
+  Model('User').findOne(user).exec(function(err,user){
     if(err){
       req.flash('error','登录失败!');
       return res.redirect('/users/login');
