@@ -1,0 +1,58 @@
+block vars
+doctype html
+html(lang="en-us")
+    head
+        meta(charset="utf-8")
+        //- meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        title #{(activityName + ' - ' || '') + '中国东方航空'}
+        //- meta(name='keywords',content=config.keywords)
+        //- meta(name='description',content=config.description)
+        link(href="/favicon.ico", type="system/assets/images/x-icon")
+        <!--[if IE 7]>
+        <link rel="stylesheet" type="text/css" media="all" href="http://www.ceair.com/resource4/css/ie7hack.css"/>
+        <![endif]-->
+        //- CSS
+        link(href='http://www.ceair.com/resource4/css/public.css')
+        link(href='http://www.ceair.com/resource4/css/index.css')
+        link(href='/css/index2.css')
+        block css
+        script(src="http://www.ceair.com/resource4/js/public/jquery-1.8.3.min.js")
+        script(src="http://www.ceair.com/resource4/js/public/base.min.js")
+        script(src='/js/index2.min.js')
+
+        block head
+
+    //- HTML BODY
+    body
+        include ./header.pug
+        #mainContent.main-content
+            .Banner img(src='/images/Banner.jpg')
+            .BodyContent
+                .GoodsArea
+                    .GoodsTop
+                        .GoodsImg
+                            a(href='#') img(src='/images/goods1.jpg')
+                        .GoodsInfo
+                            .info 耐克ROSHE ONE新款运动鞋
+                            .price
+                                p 活动价：
+                                    b 1680
+                                p 积分价：
+                                    b 7290000
+                            .explain
+                                p 因为卖萌，所以年轻。因为好奇，所以探寻。因为需要，所以存在。
+
+        include ./footer.pug
+        //- JAVASCRIPT
+
+        //- JS
+        script(src="http://www.ceair.com/resource4/js/public/sea.js")
+        script(src="http://www.ceair.com/resource4/js/public/business.min.js")
+        script(src="http://www.ceair.com/resource4/js/factory/Factory.js")
+        script(type='text/javascript')
+            |seajs.use("http://www.ceair.com/resource4/js/a/topUser.js");
+        script(type='text/javascript')
+            |window._bd_share_config = {"common": {"bdSnsKey": {},"bdText": "","bdMini": "2","bdMiniList": false,"bdPic": "","bdStyle": "0","bdSize": "16"}, "slide": {"type": "slide", "bdImg": "6", "bdPos": "right", "bdTop": "125"}};with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+
+        block js

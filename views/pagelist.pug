@@ -1,0 +1,16 @@
+include includes/header.pug
+  table.table.table-hover.table-bordered
+    tr
+      th 页面ID
+      th 页面名称
+      th 生成日期
+      th 操作
+    each pagelist in pagelists
+      tr
+        td #{pagelist._id}
+        td #{pagelist.pageTitle}
+        td #{pagelist.createAt}
+        td
+          a.btn.btn-primary(href="/edit/" + pagelist._id) 编辑
+          a.btn.btn-success(href="/submit/" + pagelist._id) 预览
+          a.btn.btn-danger(href="/pagelist/delete/" + pagelist._id) 删除

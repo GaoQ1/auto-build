@@ -23,11 +23,26 @@ router.get('/', auth.checkLogin, function(req,res){
   res.render('index')
 })
 
-router.get('/submit/:id', function(req, res) {
+router.get('/edit/:id', auth.checkLogin, function(req,res){//todo
+  let id = req.params.id;
+
+  Model('Template').find({_id: id}).exec(function(err,info){
+    if(err){
+      req.flash('error',err);
+      return res.redirect('back');
+    }else{
+      console.log(info);
+      res.render('index')
+    }
+  })
+})
+
+router.get('/submit/:id', auth.checkLogin, function(req, res) {
   var id = req.params.id;
   Model('Template').find({_id: id}).exec(function(err,info){
     if(err){
-      console.log("err:",err)
+      req.flash('error',err);
+      return res.redirect('back');
     }else{
       let model = info[0].modelType;//模板类型
       let id = info[0]._id;//数据的ID
@@ -49,7 +64,7 @@ router.get('/submit/:id', function(req, res) {
         productInfos: productInfos
       }
 
-      res.render('template/model1.pug',options);
+      res.render(`template/${model}.pug`,options);
 
       let compiledFunction = pug.compileFile(path.join(__dirname,`../views/template/${model}.pug`));
 
