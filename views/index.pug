@@ -11,6 +11,8 @@ include includes/header.pug
       .col-sm-4(data-type="backgroundImage")
         label 背景图片
         input.form-control(type="file" name="inputFile")
+        p 图片地址：
+
 
     .form-group
       h3 产品区域1
@@ -23,18 +25,7 @@ include includes/header.pug
       .col-sm-4(data-type="productImage")
         label 产品图片
         input.form-control(type="file" name="inputFile")
-
-    .form-group
-      h3 产品区域2
-      .col-sm-4
-        label 产品名称
-        input.form-control(type="text" name="productName" placeholder="请输入产品名称")
-      .col-sm-4
-        label 产品价格
-        input.form-control(type="text" name="productPrice" placeholder="请输入产品价格")
-      .col-sm-4(data-type="productImage")
-        label 产品图片
-        input.form-control(type="file" name="inputFile")
+        p 图片地址：
 
     .form-group
       label 选择模板

@@ -12,6 +12,7 @@ module.exports = {
     pageTitle: { type:String },
     productName: { type:String },
     productPrice: { type:String },
+    imageInfos: { type:Array },
     createAt: { type:Date, default:Date.now },
     modelType: { type:String }
   }
