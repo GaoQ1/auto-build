@@ -13,19 +13,21 @@ include includes/header.pug
         input.form-control(type="file" name="inputFile")
         p 图片地址：
 
-
-    .form-group
+    .form-group#productArea
       h3 产品区域1
-      .col-sm-4
-        label 产品名称
-        input.form-control(type="text" name="productName" placeholder="请输入产品名称")
-      .col-sm-4
-        label 产品价格
-        input.form-control(type="text" name="productPrice" placeholder="请输入产品价格")
-      .col-sm-4(data-type="productImage")
-        label 产品图片
-        input.form-control(type="file" name="inputFile")
-        p 图片地址：
+        button.btn.btn-danger#deleteProd(type="button", style="float:right") 删除
+        button.btn.btn-default#addProd(type="button", style="float:right") 添加
+      div.product
+        .col-sm-4
+          label 产品名称
+          input.form-control(type="text" name="productName" placeholder="请输入产品名称")
+        .col-sm-4
+          label 产品价格
+          input.form-control(type="text" name="productPrice" placeholder="请输入产品价格")
+        .col-sm-4(data-type="productImage")
+          label 产品图片
+          input.form-control(type="file" name="inputFile")
+          p 图片地址：
 
     .form-group
       label 选择模板
@@ -37,3 +39,6 @@ include includes/header.pug
     .form-group
       button(type="submit", class="btn btn-default") 预览并提交
       button(type="reset", class="btn btn-default") 重置
+
+script(src="/lib/jquery.form.min.js")
+script(src="/js/index.js")

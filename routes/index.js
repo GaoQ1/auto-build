@@ -9,10 +9,10 @@ const router = express.Router();
 const multer = require('multer');
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'dist/images')
+    cb(null, `dist/images`)
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname )
+    cb(null, file.originalname )
   }
 })
 let upload = multer({ storage: storage });
@@ -23,7 +23,7 @@ router.get('/', auth.checkLogin, function(req,res){
   res.render('index')
 })
 
-router.get('/edit/:id', auth.checkLogin, function(req,res){//todo
+router.get('/edit/:id', auth.checkLogin, function(req,res){//todo 编辑
   let id = req.params.id;
 
   Model('Template').find({_id: id}).exec(function(err,info){
@@ -80,10 +80,24 @@ router.get('/submit/:id', auth.checkLogin, function(req, res) {
 });
 
 
+/*router.post('/submit', upload.array('inputFile'), function(req, res) {
+  imgFiles = req.files;
+  let userId = req.session.user._id;
+  new Model('Template')(Object.assign(req.body,{userId: userId, imageInfos: imgFiles})).save(function(err,info){
+
+    if(err){
+      console.log(err)
+    }else{
+      let id = info._id;
+      res.redirect('/submit/' + id);
+    }
+  })
+});
+*/
+
 router.post('/submit', upload.array('inputFile'), function(req, res) {
   imgFiles = req.files;
   let userId = req.session.user._id;
-
   new Model('Template')(Object.assign(req.body,{userId: userId, imageInfos: imgFiles})).save(function(err,info){
     if(err){
       console.log(err)
@@ -92,6 +106,10 @@ router.post('/submit', upload.array('inputFile'), function(req, res) {
       res.redirect('/submit/' + id);
     }
   })
+});
+
+router.post('/uploadFile', upload.array('inputFile'), function(req, res) {//todo
+  console.log('uploadFile', req.body);
 });
 
 module.exports = router;
