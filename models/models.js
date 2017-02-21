@@ -8,12 +8,10 @@ module.exports = {
 
   Template: {
     userId: { type:ObjectId, ref:'User' },
-    activityName: { type:String },
-    pageTitle: { type:String },
-    productName: { type:String },
-    productPrice: { type:String },
-    imageInfos: { type:Array },
     createAt: { type:Date, default:Date.now },
-    modelType: { type:String }
+    activity: { type:Object },
+    products: { type:Array },
+    modelType: { type:String },
+    status: {type: Number,default: 1}
   }
 }

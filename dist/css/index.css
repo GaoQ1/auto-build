@@ -1,0 +1,35 @@
+.form-group .input-container{
+  height: 60px;
+  padding-top: 15px;
+}
+
+.input-img{
+  position: relative;
+}
+
+input[type='file']{
+  opacity: 0;
+}
+
+.input-file{
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border: 1px solid black;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 200;
+  cursor: pointer;
+  pointer-events: none;
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  box-sizing: border-box;
+}
+
+.input-file img{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}

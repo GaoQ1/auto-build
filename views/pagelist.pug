@@ -1,3 +1,4 @@
+- var p = 1
 include includes/header.pug
   table.table.table-hover.table-bordered
     tr
@@ -5,13 +6,50 @@ include includes/header.pug
       th 页面名称
       th 生成日期
       th 操作
-    each pagelist in pagelists
+    each pagelist in docs
       tr
-        td #{pagelist.activityName}
-        td #{pagelist.pageTitle}
+        td #{pagelist.activity.activityName}
+        td #{pagelist.activity.pageTitle}
         td #{pagelist.createAt}
         td
           a.btn.btn-primary(href="/edit/" + pagelist._id) 编辑
           a.btn.btn-success(href="/submit/" + pagelist._id) 预览
           a.btn.btn-info(href="/pagelist/download/" + pagelist._id) 下载
           a.btn.btn-danger(href="/pagelist/delete/" + pagelist._id) 删除
+  ul.pagination
+    li#pre
+      a &laquo;
+
+    while p < pages+1
+      if(parseInt(page) == p)
+        li.active
+          a(href="/pagelist/"+p) #{p}
+      else
+        li
+          a(href="/pagelist/" + p) #{p}
+      - p++
+    li#next
+      a &raquo;
+
+
+script(type='text/javascript').
+  var config = {
+    toatal: #{total},
+    page: #{parseInt(page)},
+    pages: #{parseInt(pages)}
+  };
+
+  $('#pre').click(function () {
+    if(config.page == 1){
+      return false
+    }
+    window.location.href = "/pagelist/"+ (config.page - 1)
+  });
+
+  $('#next').click(function () {
+    if (config.page == config.pages) {
+      return false
+    }
+    window.location.href = "/pagelist/" + (config.page + 1)
+  });
+

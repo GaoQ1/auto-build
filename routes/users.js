@@ -13,7 +13,7 @@ router.post('/reg', auth.checkNotLogin, function(req,res){
     return res.redirect('/users/reg');
   }
   delete user.repassword;
-  user.password = md5(user.password);
+  user.password = cipher(user.password, 'gaoquan');
 
   new Model('User')(req.body).save(function(err,user){
     if(err){
@@ -33,7 +33,7 @@ router.get('/login', auth.checkNotLogin, function(req, res) {
 
 router.post('/login', auth.checkNotLogin, function(req,res){
   var user = req.body;
-  user.password = md5(user.password);
+  user.password = cipher(user.password, 'gaoquan');
 
   Model('User').findOne(user).exec(function(err,user){
     if(err){

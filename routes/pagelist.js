@@ -7,21 +7,54 @@ const path = require('path');
 const async = require('async');
 const auth = require('../middle/auth');
 
-router.get('/', auth.checkLogin, function(req,res){
-  Model('Template').find({'userId': req.session.user._id}).exec(function(err, info){
-    if(err){
-      req.flash('error',err);
-      return res.redirect('back');
-    }else{
-      let options = {
-        pagelists: info
+const pageSize = 3;
+
+
+router.get('/:page?', auth.checkLogin, function(req,res){
+  let _page = req.params.page ? req.params.page: 1;
+  Model('Template').paginate({'userId': req.session.user._id,'status': 1}, { page: _page, limit: pageSize }, function(err, result) {
+    console.log(result);
+      if(err){
+        req.flash('error',err);
+        return res.redirect('back');
+      }else{
+        res.render('pagelist', result);
       }
-      res.render('pagelist', options);
-    }
-  })
+  });
 });
 
+// 修改删除逻辑，拓展原来的表结构， 0为默认状态，删除就是将默认 status为0的状态修改为1
 router.get('/delete/:id', auth.checkLogin, function(req,res){
+    Model('Template').update(
+      {
+        '_id': req.params.id
+      },
+      {
+        'status': 0
+      }, function(error) {
+        if (error) {
+          req.flash('error',error);
+          res.redirect('back');
+        }else{
+          console.log("删除成功")
+          req.flash('success','删除成功');
+          res.redirect('/pagelist');
+        }
+    });
+  /*
+  Model('Template').find({'_id': req.params.id}).exec(function(err, info){
+    if(err){
+      req.flash('error',err);
+      res.redirect('back');
+    }else{
+      req.flash('success','删除文章成功');
+      res.redirect('/pagelist');
+    }
+    // cb(err, 'delete database')
+  });
+  */
+  // 此处为删除对应 的html  need to delete
+    /*
   async.series([(cb) => {
     Model('Template').find({'_id': req.params.id}).exec(function(err, info){
       let html = `${info[0].modelType}_${info[0]._id}.html`;
@@ -35,8 +68,21 @@ router.get('/delete/:id', auth.checkLogin, function(req,res){
       })
 
 
-      info[0].imageInfos.forEach((item,index) => {
-        let imagePath = path.resolve(__dirname, `../${item.destination}/${item.originalname}`);
+      //删除背景图
+      let backgourndimagePath = path.resolve(__dirname, `../${info[0].activity.backgroundImagePath}`);
+
+      fs.stat(backgourndimagePath, (err, stat) => {
+        if(stat && stat.isFile()){
+          rm(backgourndimagePath, () => {
+            console.log('delete backgourndImage is done!');
+          })
+        }
+      })
+
+      //删除产品图
+
+      info[0].products.forEach((item,index) => {
+        let imagePath = path.resolve(__dirname, `../${item.productImagePath}`);
 
         fs.stat(imagePath, (err, stat) => {//删除images
           if(stat && stat.isFile()){
@@ -60,13 +106,13 @@ router.get('/delete/:id', auth.checkLogin, function(req,res){
           req.flash('success','删除文章成功');
           res.redirect('/pagelist');
         }
-
         cb(err, 'delete database')
       })
     }
   ],(err, result) => {
     console.log(result);
   })
+    */
 });
 
 router.get('/download/:id', auth.checkLogin, function(req,res){
@@ -80,6 +126,7 @@ router.get('/download/:id', auth.checkLogin, function(req,res){
   archive.on('error', function(err) {
     throw err;
   });
+
   archive.pipe(output);
 
   Model('Template').find({'_id': req.params.id}).exec(function(err, info){
@@ -89,11 +136,16 @@ router.get('/download/:id', auth.checkLogin, function(req,res){
     }else{
       let html = `${info[0].modelType}_${info[0]._id}.html`;
       let htmlPath = path.resolve(__dirname, `../dist/html/${html}`);
-      archive.append(fs.createReadStream(htmlPath), { name: html })
 
-      info[0].imageInfos.forEach((item,index) => {
-        let imagePath = path.resolve(__dirname, `../${item.destination}/${item.originalname}`);
-        archive.append(fs.createReadStream(imagePath), { name: item.originalname })
+      archive.append(fs.createReadStream(htmlPath), { name: html });
+
+      //下载背景图
+      let backgroundimagePath = path.resolve(__dirname, `../${info[0].activity.backgroundImagePath}`);
+      archive.append(fs.createReadStream(backgroundimagePath), { name: info[0].activity.backgroundImageName })
+
+      info[0].products.forEach((item,index) => {
+        let imagePath = path.resolve(__dirname, `../${item.productImagePath}`);
+        archive.append(fs.createReadStream(imagePath), { name: item.productImageName })
       });
 
       archive.finalize();

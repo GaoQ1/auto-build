@@ -1,33 +1,72 @@
 include includes/header.pug
 .container
   form(method="post", enctype="multipart/form-data", action="/submit", class="form-horizontal")
-    .form-group
+    .form-group#activityArea
       .col-sm-4
         label 活动名称
-        input.form-control(type="text" name="activityName" placeholder="请输入活动名称")
+        .input-container
+          input.form-control(type="text" name="activityName" value=((activity || {}).activityName) placeholder="请输入活动名称")
       .col-sm-4
         label 页面标题
-        input.form-control(type="text" name="pageTitle" placeholder="请输入标题")
-      .col-sm-4(data-type="backgroundImage")
+        .input-container
+          input.form-control(type="text" name="pageTitle" value=((activity || {}).pageTitle) placeholder="请输入标题")
+      .col-sm-4.input-img(data-type="backgroundImage")
         label 背景图片
-        input.form-control(type="file" name="inputFile")
-        p 图片地址：
+        .input-container
+          input.form-control(type="file" name="inputFile")
+
+          if (activity || {}).backgroundImageName
+            input(type="hidden",name="backgroundImage",data-name=activity.backgroundImageName,value=activity.backgroundImagePath)
+            .input-file
+              img(src= '../images/' + activity.backgroundImageName)
+          else
+            .input-file
+              |+
 
     .form-group#productArea
       h3 产品区域1
-        button.btn.btn-danger#deleteProd(type="button", style="float:right") 删除
         button.btn.btn-default#addProd(type="button", style="float:right") 添加
-      div.product
-        .col-sm-4
-          label 产品名称
-          input.form-control(type="text" name="productName" placeholder="请输入产品名称")
-        .col-sm-4
-          label 产品价格
-          input.form-control(type="text" name="productPrice" placeholder="请输入产品价格")
-        .col-sm-4(data-type="productImage")
-          label 产品图片
-          input.form-control(type="file" name="inputFile")
-          p 图片地址：
+      if productInfos
+        each product in productInfos
+          div.product
+            .col-sm-4
+              label 产品名称
+              .input-container
+                input.form-control(type="text" name="productName" value=product.productName placeholder="请输入产品名称")
+            .col-sm-4
+              label 产品价格
+              .input-container
+                input.form-control(type="text" name="productPrice" value=product.productPrice placeholder="请输入产品价格")
+            .col-sm-3.input-img(data-type="productImage")
+              label 产品图片
+              .input-container
+                input.form-control(type="file" name="inputFile")
+                if (product || {}).productImageName
+                  input(type="hidden",name="productImage",data-name=product.productImageName,value=product.productImagePath)
+                  .input-file
+                    img(src= '../images/' + product.productImageName)
+                else
+                  .input-file
+                    |+
+            .col-sm-1
+              button.btn.btn-danger.deleteProd(type="button", style="float:right") 删除
+      else
+        div.product
+          .col-sm-4
+            label 产品名称
+            .input-container
+              input.form-control(type="text" name="productName" placeholder="请输入产品名称")
+          .col-sm-4
+            label 产品价格
+            .input-container
+              input.form-control(type="text" name="productPrice" placeholder="请输入产品价格")
+          .col-sm-3.input-img(data-type="productImage")
+            label 产品图片
+            .input-container
+              input.form-control(type="file" name="inputFile")
+              .input-file +
+          .col-sm-1
+            button.btn.btn-danger.deleteProd(type="button", style="float:right") 删除
 
     .form-group
       label 选择模板
@@ -37,7 +76,7 @@ include includes/header.pug
         option(value="model3") 模板三
 
     .form-group
-      button(type="submit", class="btn btn-default") 预览并提交
+      button(type="button", class="btn btn-default" id="submitBtn") 预览并提交
       button(type="reset", class="btn btn-default") 重置
 
 script(src="/lib/jquery.form.min.js")
